@@ -1,0 +1,27 @@
+html {
+  overflow: hidden;
+  
+}
+
+body {
+  margin: 0;
+  cursor: url('@/assets/icons/cursor.png'), auto;
+  font-family: '汉仪文黑', 'SDK_SC_Web';
+}
+
+button {
+  font-family: '汉仪文黑', 'SDK_SC_Web';
+  cursor: url('@/assets/icons/cursor.png'), auto;
+}
+
+input {
+  font-family: '汉仪文黑', 'SDK_SC_Web';
+}
+
+#app {
+  cursor: url('@/assets/icons/cursor.png'), auto;
+  font-family: '汉仪文黑', 'SDK_SC_Web';
+  user-select: none;
+  overflow: hidden;
+  height: 100vh;
+}
