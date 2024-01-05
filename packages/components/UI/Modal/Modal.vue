@@ -65,8 +65,6 @@ const cancelNotEmpty = computed(
     props.cancelText !== undefined || props.cancelIcon !== undefined || props.cancel !== undefined
 )
 
-const container = document.body
-
 watch(
   () => props.visible,
   () => {
@@ -83,7 +81,7 @@ watch(
 </script>
 
 <template>
-  <Teleport :to="container">
+  <Teleport to="body">
     <div :style="{ zIndex: zIndex || index, position: 'fixed', top: 0, left: 0 }">
       <div
         class="modal-mask"

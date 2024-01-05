@@ -30,6 +30,18 @@ const messageFunc = (
     duration?: number
   }
 ) => {
+  if (uniqueId === 0) {
+    /**
+     * 自执行函数，创建容器，放在Queue创建后，避免Msg组件的循环导入
+     */
+    ;(() => {
+      const box = document.createElement('div')
+      box.id = S['message-box']
+      document.body.appendChild(box)
+      const app = createApp(Msg)
+      app.mount(box)
+    })()
+  }
   // 创建一个组件
   Queue.enQueue({
     text: msg,
@@ -67,14 +79,4 @@ const Msg = defineComponent(() => {
       })}
     </TransitionGroup>
   )
-}) /**
- * 自执行函数，创建容器，放在Queue创建后，避免Msg组件的循环导入
- */
-
-;(() => {
-  const box = document.createElement('div')
-  box.id = S['message-box']
-  document.body.appendChild(box)
-  const app = createApp(Msg)
-  app.mount(box)
-})()
+})

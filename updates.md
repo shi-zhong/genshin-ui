@@ -9,3 +9,7 @@
   3. 图片资源`Element`,`Weapon`
   4. 工具函数`useMockScrollDrag`
   5. 各文件依赖及打包文件
+
+- `2024-01-05` `v1.0.1`
+  1. 修改了`Message`组件容器的初始化位置，避免了node环境下访问`document`变量
+  2. 修改了`Modal`组件`Teleport`的容器写法，避免在`script`中直接访问`docuent`
