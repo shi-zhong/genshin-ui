@@ -23,7 +23,7 @@ const props = withDefaults(
 )
 
 const pos = reactive({
-  dire: 'top',
+  placement: 'top',
   left: 800,
   top: 50,
   width: 0,
@@ -77,7 +77,6 @@ const FallbackList = (placement: acceptDirection) => {
 }
 
 const requestPopoverPosition = async (x: number = 0, y: number = 0) => {
-  let cache = [0, 0]
 
   const cRect =
     body.value?.getBoundingClientRect() ||
@@ -125,6 +124,7 @@ const requestPopoverPosition = async (x: number = 0, y: number = 0) => {
   let placement = props.placement
   const fallbackList = FallbackList(placement)
   let f = 0
+  let cache = [0, 0]
 
   while (f < fallbackList.length) {
     const place = requestPlacement(fallbackList[f], cRect, { width: pWidth, height: pHeight }, x, y)
@@ -141,6 +141,7 @@ const requestPopoverPosition = async (x: number = 0, y: number = 0) => {
 
   pos.left = cache[0] + pageX
   pos.top = cache[1] + pageY
+  pos.placement = props.placement;
   return cache
 }
 
@@ -161,42 +162,48 @@ const requestPlacement = (
   } = cRect
   const { width: pWidth, height: pHeight } = pRect
 
-  const pos: [number, number] = [0, 0]
+  pos.placement = placement
+
+  const position: [number, number] = [0, 0]
   const gap = 10
 
   if (placement === 'top' || placement === 'bottom') {
     if (placement === 'top') {
-      pos[1] = cTop - pHeight - gap
+      position[1] = cTop - pHeight - gap
     } else {
-      pos[1] = cBottom + gap
+      position[1] = cBottom + gap
     }
 
     if (props.floating(cWidth, pWidth)) {
-      pos[0] = Between(Between(x - pWidth / 2, cLeft, cRight - pWidth), 0, innerWidth - pWidth)
+      position[0] = Between(Between(x - pWidth / 2, cLeft, cRight - pWidth), 0, innerWidth - pWidth)
     } else {
-      pos[0] = Between(
+      position[0] = Between(
         Between(cLeft + cWidth / 2 - pWidth / 2, cLeft, cRight - pWidth),
         0,
         innerWidth - pWidth
       )
     }
-    return pos
+    return position
   } else if (placement === 'left' || placement === 'right') {
     if (placement === 'left') {
-      pos[0] = cLeft - pWidth - 10
+      position[0] = cLeft - pWidth - 10
     } else {
-      pos[0] = cRight + 10
+      position[0] = cRight + 10
     }
     if (props.floating(cHeight, pHeight)) {
-      pos[1] = Between(Between(y - pHeight / 2, cTop, cBottom - pHeight), 0, innerHeight - pHeight)
+      position[1] = Between(
+        Between(y - pHeight / 2, cTop, cBottom - pHeight),
+        0,
+        innerHeight - pHeight
+      )
     } else {
-      pos[1] = Between(
+      position[1] = Between(
         Between(cTop + cHeight / 2 - pHeight / 2, cTop, cBottom - pHeight),
         0,
         innerHeight - pHeight
       )
     }
-    return pos
+    return position
   } else {
     let d = props.placement
     let p: [number, number] = [0, 0]
@@ -310,6 +317,10 @@ defineExpose({
           left: `${pos.left}px`,
           top: `${pos.top}px`,
           width: syncWidth && pos.width !== 0 ? `${pos.width}px` : undefined
+        }"
+        :props="{
+          ...pos,
+          visible: visible
         }"
       />
     </Transition>
