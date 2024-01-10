@@ -4,20 +4,24 @@ import { ElementPng } from '@/assets/elements'
 import { Between } from '@/utils/math'
 import Icon from '@@/Base/Icon'
 
-const props = defineProps<
-   {
-      progress: number
-    }
-  & { stage: number; parts: number }
->()
+interface PP {
+  progress: number
+}
+
+interface PSP {
+  stage: number
+  parts: number
+}
+
+const props = defineProps<PP | PSP>()
 
 const tProgress = computed(() => {
   let notLimit = 0
 
-  if (props.progress !== undefined) {
-    notLimit = props.progress
+  if ((props as PP).progress !== undefined) {
+    notLimit = (props as PP).progress
   } else {
-    notLimit = (100 / props.stage) * props.parts
+    notLimit = (100 / (props as PSP).stage) * (props as PSP).parts
   }
 
   return Between(notLimit, 0, 100)
@@ -34,7 +38,7 @@ const toRealPercent = (o: number) => {
   <div class="loading">
     <div class="unload">
       <Icon
-        v-for="ele of Object.keys(ElementPng) as (keyof typeof ElementPng)[]"
+        v-for="ele of (Object.keys(ElementPng) as (keyof typeof ElementPng)[])"
         class="element"
         type="projection"
         color="rgb(245,245,245)"
@@ -51,7 +55,7 @@ const toRealPercent = (o: number) => {
       }"
     >
       <Icon
-        v-for="ele of Object.keys(ElementPng) as (keyof typeof ElementPng)[]"
+        v-for="ele of (Object.keys(ElementPng) as (keyof typeof ElementPng)[])"
         class="element"
         type="projection"
         color="rgb(102,102,102)"
@@ -83,4 +87,3 @@ const toRealPercent = (o: number) => {
   margin: 10px;
 }
 </style>
-@/assets/elements

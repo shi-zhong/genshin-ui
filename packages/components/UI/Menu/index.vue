@@ -3,11 +3,6 @@ import { onMounted, ref } from 'vue'
 import { ClassNameFactor, EventDispatch } from '@/utils'
 import AttentionDecoration from '../Tags/AttentionDecoration.vue'
 
-// 用于应用按下但未松开时样式展示
-const press = ref(-1)
-
-const active = ref('')
-
 const S = ClassNameFactor('options-')
 
 const props = defineProps<{
@@ -23,6 +18,10 @@ const emits = defineEmits<{
   (e: 'change', pve: string, aft: string, stop: () => void): void
   (e: 'update:modelValue', value: string): void
 }>()
+
+// 用于应用按下但未松开时样式展示
+const press = ref(-1)
+const active = ref(props.modelValue || '')
 
 const handleClick = (e: Event) => {
   EventDispatch<{ url: string }>(e, {
@@ -67,7 +66,13 @@ onMounted(() => {
       data-type="item"
       :data-url="option.url"
     >
-      {{ option.txt }} <AttentionDecoration v-if="option.n !== undefined" style="vertical-align: baseline" :size="20" :n="option.n" />
+      {{ option.txt }}
+      <AttentionDecoration
+        v-if="option.n !== undefined"
+        style="vertical-align: baseline"
+        :size="20"
+        :n="option.n"
+      />
     </div>
   </div>
 </template>
