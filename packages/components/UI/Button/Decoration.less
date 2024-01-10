@@ -1,37 +1,21 @@
-.decoration {
-  .special-pos {
-    position: relative;
-    aspect-ratio: 1;
-    height: 100%;
+.decoration-black-bgi.decoration {
+  &-round::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    display: block;
+    width: 40%;
+    height: 40%;
+
+    border: 3px solid rgb(251, 204, 62);
     border-radius: 50%;
   }
 
-  .special {
-    .special-pos();
-    background-color: rgb(49, 49, 49);
-  }
-
-  &-round {
-    .special();
-    &::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-
-      transform: translate(-50%, -50%);
-
-      display: block;
-      width: 40%;
-      height: 40%;
-
-      border: 3px solid rgb(251, 204, 62);
-      border-radius: 50%;
-    }
-  }
-
   &-fork {
-    .special();
     .special-fork-line {
       content: '';
       position: absolute;
@@ -54,113 +38,101 @@
     }
   }
 
-  &-del {
-    .special();
-    &::before {
-      content: '';
-      position: absolute;
-      display: block;
-      width: 100%;
-      aspect-ratio: 1;
-      background: url(./assets/trash.png) center center no-repeat;
-      background-size: 80%;
-    }
+  &-del::before {
+    content: '';
+    position: absolute;
+    display: block;
+    width: 100%;
+    aspect-ratio: 1;
+    background: url(./assets/trash.png) center center no-repeat;
+    background-size: 80%;
   }
 
-  &-loading {
-    .special();
-    &::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
+  &-loading::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
 
-      transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
 
-      display: block;
-      width: 40%;
-      height: 40%;
+    display: block;
+    width: 40%;
+    height: 40%;
 
-      border: 3px solid rgb(251, 204, 62);
-      border-bottom-color: transparent;
-      border-radius: 50%;
+    border: 3px solid rgb(251, 204, 62);
+    border-bottom-color: transparent;
+    border-radius: 50%;
 
-      animation: rotating 1s linear infinite;
+    animation: rotating 1s linear infinite;
 
-      @keyframes rotating {
-        0% {
-          transform: translate(-50%, -50%) rotate(0deg);
-        }
+    @keyframes rotating {
+      0% {
+        transform: translate(-50%, -50%) rotate(0deg);
+      }
 
-        100% {
-          transform: translate(-50%, -50%) rotate(360deg);
-        }
+      100% {
+        transform: translate(-50%, -50%) rotate(360deg);
       }
     }
   }
+}
 
-  &-menu {
-    .special-pos();
-    &::before {
-      content: '';
-      position: absolute;
-      display: block;
-      width: 100%;
-      aspect-ratio: 1;
-      background: url(./assets/menu.png) center center no-repeat;
-      background-size: 80%;
-    }
+// spread模式下稍微小一些来平衡表现效果
+.button-wrap-button.button-wrap-spread .decoration-colord-image::before {
+  background-size: 75%;
+}
+
+.decoration-black-bgi {
+  position: relative;
+  aspect-ratio: 1;
+  height: 100%;
+  border-radius: 50%;
+  background-color: rgb(49, 49, 49);
+}
+
+.decoration-colord-image.decoration {
+  &-menu::before {
+    background-image: url(./assets/menu.png);
+    background-size: 80%;
   }
 
-  &-sort {
-    .special-pos();
-    &::before {
-      content: '';
-      position: absolute;
-      display: block;
-      width: 100%;
-      aspect-ratio: 1;
-      background: url(./assets/sort.svg) center center no-repeat;
-      background-size: 100%;
-    }
+  &-sort::before {
+    background-image: url(./assets/sort.svg);
   }
 
-  &-filter {
-    .special-pos();
-    &::before {
-      content: '';
-      position: absolute;
-      display: block;
-      width: 100%;
-      aspect-ratio: 1;
-      background: url(./assets/filter.svg) center center no-repeat;
-      background-size: 100%;
-    }
+  &-filter::before {
+    background-image: url(./assets/filter.svg);
   }
 
-  &-back {
-    .special-pos();
-    &::before {
-      content: '';
-      position: absolute;
-      display: block;
-      width: 100%;
-      aspect-ratio: 1;
-      background: url(./assets/back.png) center center no-repeat;
-      background-size: 100%;
-    }
+  &-back::before {
+    background-image: url(./assets/back.png);
   }
 
-  &-close {
-    .special-pos();
-    &::before {
-      content: '';
-      position: absolute;
-      display: block;
-      width: 100%;
-      aspect-ratio: 1;
-      background: url(../../../assets/icons/close.png) center center no-repeat;
-      background-size: 100%;
-    }
+  &-close::before {
+    background-image: url(../../../assets/icons/close.png);
   }
+}
+
+.decoration-colord-image {
+  position: relative;
+  aspect-ratio: 1;
+  height: 100%;
+  border-radius: 50%;
+
+  &::before {
+    content: '';
+    position: absolute;
+    display: block;
+    width: 100%;
+    aspect-ratio: 1;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 100%;
+  }
+}
+
+.button-wrap-button:active .decoration-colord-image::before,
+.button-wrap-button.button-wrap-shrink-disable .decoration-colord-image::before {
+  filter: brightness(5);
 }

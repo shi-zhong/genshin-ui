@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, toRefs } from 'vue'
+import { computed, ref, toRefs } from 'vue'
 import { ClassNameFactor } from '@/utils/className'
 import AttentionDecoration from '../Tags/AttentionDecoration.vue'
 
@@ -74,22 +74,47 @@ const handleClick = () => {
     }, props.sleep)
   }
 }
+
+const iconType = computed(() => {
+  const icon = props.icon || ''
+  if (/\/|\./.test(icon)) return 'image'
+  if (/^\$/.test(icon)) return 'colord-image'
+  if (icon === '') return ''
+  return 'black-bgi'
+})
+
+const tIcon = computed(() => {
+  if (iconType.value === 'colord-image') return props.icon?.slice(1)
+  return props.icon
+})
+
+const themeDark = {
+  '--theme-button-background': 'var(--font-dark-gray)',
+  '--theme-button-color': 'var(--blank-white)',
+  '--theme-button-reverse-color': 'var(--font-dark-gray)'
+}
+const themeLight = {
+  '--theme-button-background': 'var(--blank-white)',
+  '--theme-button-color': 'var(--font-dark-gray)',
+  '--theme-button-reverse-color': 'var(--blank-white)'
+}
 </script>
 <template>
   <button
     :class="[S({ button: true, ['theme-' + theme]: type === 'shrink' }), decideExtraButtonStyle()]"
     @click="handleClick"
+    :style="theme === 'dark' ? themeDark : themeLight"
     :disabled="disable || isSleeping"
   >
     <img
-      v-if="/\/|\./.test(icon || '')"
+      v-if="iconType === 'image'"
       style="display: block"
       :class="S('special')"
       :draggable="false"
       :src="icon"
       :alt="icon || 'button'"
     />
-    <div v-else :class="`decoration-${icon} ${S('special')}`"></div>
+    <div v-else :class="`decoration-${tIcon} decoration-${iconType} ${S('special')}`"></div>
     <AttentionDecoration v-if="attention" :class="S('attention')" />
     <span v-if="type === 'shrink' && shape !== 'round'" :class="S({ balance: balance === true })">
       <slot></slot>
@@ -99,109 +124,50 @@ const handleClick = () => {
 
 <style scoped lang="less">
 @import './Decoration.less';
-.button-wrap-theme {
-  &-dark {
-    &.button-wrap-button {
-      &::before {
-        background: var(--blank-white);
-        box-shadow: var(--box-shadow);
-      }
 
-      &::after {
-        // 按钮背景色
-        background: var(--font-dark-gray);
-        box-shadow: var(--box-shadow);
-      }
-    }
-    &.button-wrap-shrink {
-      color: var(--blank-white);
-      &:active {
-        &::after {
-          background: var(--blank-white);
-        }
-        color: var(--font-dark-gray);
-        opacity: 0.5;
-      }
+.button-wrap-button {
+  --theme-button-background: var(--blank-white);
+  --theme-button-color: white;
+  --theme-button-reverse-color: black;
+  --active-mixed-color: color-mix(
+    in srgb,
+    var(--theme-button-color),
+    var(--theme-button-reverse-color)
+  );
+}
 
-      &-disable {
-        &::after {
-          background: var(--blank-white);
-          border: 1px solid var(--blank-white);
-        }
-        color: var(--font-dark-gray);
-      }
-    }
+.button-wrap-button {
+  position: relative;
+  z-index: 1;
+
+  min-width: 60px;
+  min-height: 60px;
+  max-height: 200px;
+
+  border: none;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  background: none;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    height: 100%;
+    transition: 0.1s;
+    box-shadow: var(--box-shadow);
+    background: var(--theme-button-background);
   }
-  &-light {
-    &.button-wrap-button {
-      &::before {
-        background: var(--blank-white);
-        box-shadow: var(--box-shadow);
-      }
-
-      &::after {
-        background: var(--blank-white);
-        box-shadow: var(--box-shadow);
-      }
-    }
-    &.button-wrap-shrink {
-      color: var(--font-dark-gray);
-      &:active {
-        color: var(--blank-white);
-      }
-      &-disable {
-        &::after {
-          background-color: transparent;
-          border: 1px solid var(--blank-white);
-        }
-
-        color: var(--blank-white);
-      }
-    }
+  &:active .button-wrap-special {
+    opacity: 0.7;
   }
 }
+
+// 顺序不可调换，后写的样式会覆盖前者 必要时使用important
 .button-wrap {
-  &-button {
-    position: relative;
-    z-index: 1;
-
-    min-width: 60px;
-
-    // height: 100%;
-    min-height: 60px;
-    max-height: 200px;
-
-    border: none;
-    margin: 0;
-    padding: 0;
-
-    text-align: center;
-    background: none;
-
-    &::before {
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: 3;
-
-      background: var(--blank-white);
-      box-shadow: var(--box-shadow);
-      transition: 0.1s;
-    }
-
-    &::after {
-      position: absolute;
-      z-index: 1;
-
-      top: 0;
-      left: 0;
-
-      background: var(--blank-white);
-      box-shadow: var(--box-shadow);
-      transition: 0.1s;
-    }
-  }
-
   &-special {
     position: absolute;
     top: 0;
@@ -218,135 +184,92 @@ const handleClick = () => {
     height: 30% !important;
   }
 
-  &-image {
-    position: relative;
-    z-index: 3;
-    height: 30px;
-    margin: 15px;
-    vertical-align: middle;
-    transition: 0.1s;
-    user-select: none;
+  &-balance {
+    padding-left: 25px;
+  }
+  // 使用双类名来加强权重
+  &-round&-button {
+    aspect-ratio: 1;
+    width: auto;
   }
 }
-.button-wrap {
-  &-spread {
-    aspect-ratio: 1;
+
+.button-wrap-shrink {
+  width: 100%;
+  font-size: 23px;
+  min-width: 50px;
+  min-height: 50px;
+  color: var(--theme-button-color);
+
+  &::after {
+    z-index: -1;
+    border-radius: 999px;
+    width: 100%;
   }
 
-  &-spread::after {
-    content: '';
-    // 64px
-    height: 100%;
-    aspect-ratio: 1;
-    border-radius: 50%;
-
-    background: rgb(156, 151, 143);
-    box-sizing: border-box;
+  &:active {
+    &::after {
+      filter: blur(1px);
+      background: var(--active-mixed-color);
+      box-shadow: var(--box-shadow);
+      opacity: 0.5;
+    }
+    color: var(--theme-button-reverse-color);
+    opacity: 0.9;
   }
+  // 设置禁用样式，双类名加权重
+  &-disable.button-wrap-button {
+    &::after {
+      // 取消激活样式
+      filter: none;
+      opacity: 1;
+      box-shadow: none;
 
-  &-spread::before {
+      border: 1px solid var(--blank-white);
+      background: transparent;
+    }
+    // cancel active style
+    &:active {
+      opacity: 1;
+    }
+    & .button-wrap-special {
+      opacity: 1;
+    }
+    color: var(--theme-button-reverse-color);
+  }
+}
+
+.button-wrap-spread {
+  aspect-ratio: 1;
+  &::before {
     content: '';
     height: 80%;
     aspect-ratio: 1;
     border-radius: 50%;
-
     margin: 10%;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 3;
+    transition: 0.1s;
+    background: var(--blank-white);
+    box-shadow: var(--box-shadow);
   }
 
-  &-spread &-image {
-    margin: 17px;
-  }
+  &::after {
+    aspect-ratio: 1;
+    border-radius: 50%;
 
-  &-spread:active &-special {
-    opacity: 0.8;
+    background: rgb(156, 151, 143, 0.5);
+    box-sizing: border-box;
   }
-
-  &-spread:active::before {
+  &:active::before {
     height: 95%;
     margin: 2.5%;
-    background-color: rgb(169, 168, 165);
+    filter: blur(1px);
+    background-color: var(--active-mixed-color);
     box-shadow: var(--box-shadow);
-  }
-
-  &-spread:active &-image {
-    filter: brightness(5);
-  }
-}
-.button-wrap {
-  &-shrink {
-    width: 100%;
-    z-index: 1;
-    font-size: 23px;
-    min-width: 50px;
-    min-height: 50px;
-
-    &::before {
-      content: '';
-      display: inline-block;
-      height: 100%;
-      vertical-align: middle;
-    }
-  }
-
-  &-balance {
-    padding-left: 25px;
-  }
-
-  &-shrink&-round {
-    aspect-ratio: 1;
-    width: auto;
-  }
-
-  &-shrink::after {
-    content: '';
-    z-index: -1;
-    border-radius: 999px;
-    width: 100%;
-    height: 100%;
-  }
-
-  &-shrink &-image {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin: 0;
-    transform: translate(-50%, -50%);
-  }
-
-  &-shrink:active::after {
-    transform: scale(0.995);
-    opacity: 0.5;
-    box-shadow: var(--box-shadow);
-  }
-
-  &-shrink:active &-image {
-    filter: brightness(5);
-  }
-
-  &-shrink:active &-special {
-    opacity: 0.7;
-  }
-
-  &-shrink-disable {
-    &:active::after {
-      transform: none;
-      opacity: 1;
-    }
-
-    opacity: 0.5;
-  }
-
-  // 重写 active 激活样式
-  &-shrink-disable:active &-special {
-    opacity: 1;
-  }
-
-  &-shrink-disable:active &-special-round {
-    opacity: 1;
-  }
-
-  &-shrink-disable:active &-special-fork {
-    opacity: 1;
   }
 }
 </style>
