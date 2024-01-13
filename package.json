@@ -1,7 +1,7 @@
 {
   "name": "@shi-zhong/genshin-ui",
   "homepage": "https://github.com/shi-zhong/genshin-ui",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": false,
   "type": "module",
   "main": "./dist/lib/index.js",
@@ -35,10 +35,18 @@
   },
   "typesVersions": {
     "*": {
-      ".": ["dist/packages/index.d.ts"],
-      "ui": ["dist/packages/components/UI/index.d.ts"],
-      "base": ["dist/packages/components/Base/index.d.ts"],
-      "utils": ["dist/packages/utils/outputUtils.d.ts"]
+      ".": [
+        "dist/packages/index.d.ts"
+      ],
+      "ui": [
+        "dist/packages/components/UI/index.d.ts"
+      ],
+      "base": [
+        "dist/packages/components/Base/index.d.ts"
+      ],
+      "utils": [
+        "dist/packages/utils/outputUtils.d.ts"
+      ]
     }
   },
   "scripts": {
