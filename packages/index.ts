@@ -3,10 +3,6 @@ import type { App } from 'vue'
 import UI from '@@/UI'
 import Base from '@@/Base'
 
-import * as Element from './assets/elements'
-import * as Weapon from './assets/weapons'
-import * as Artifact from './assets/artifacts'
-
 import './assets/styles/index.less'
 
 // 定义install方法
@@ -27,8 +23,8 @@ export default {
   install
 }
 
-export { Element, Weapon, Artifact }
-
 export * from '@@/UI'
 export * from '@@/Base'
+export * from '@/assets'
 export * from '@/utils/outputUtils'
+export * from './version'
