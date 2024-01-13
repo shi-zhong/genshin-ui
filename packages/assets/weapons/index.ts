@@ -12,6 +12,14 @@ export enum Weapons {
   Sword = '单手剑'
 }
 
+export enum WeaponsCTE {
+  '弓' = 'Bow',
+  '双手剑' = 'Claymore',
+  '法器' = 'Catalyst',
+  '长柄武器' = 'Polearm',
+  '单手剑' = 'Sword'
+}
+
 export const WeaponPicture = {
   Bow,
   Claymore,

@@ -24,6 +24,16 @@ export enum Elements {
   Geo = '岩'
 }
 
+export enum ElementsCTE {
+  火 = 'Pyro',
+  水 = 'Hydro',
+  风 = 'Anemo',
+  雷 = 'Electro',
+  草 = 'Dendro',
+  冰 = 'Cryo',
+  岩 = 'Geo'
+}
+
 export type ElementsCode = keyof typeof Elements
 export type ElementsChinese = `${Elements}`
 
@@ -60,3 +70,5 @@ export const ElementWebp = {
   // 岩
   Geo: GeoWebp
 } as const
+
+

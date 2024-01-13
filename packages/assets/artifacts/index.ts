@@ -12,6 +12,14 @@ export enum ArtifactSlots {
   CircletOfLogos = '理之冠'
 }
 
+export enum ArtifactSlotsCTE {
+  '生之花' = 'FlowerOfLife',
+  '死之羽' = 'PlumnOfDeath',
+  '时之沙' = 'SandsOfEon',
+  '空之杯' = 'GobletOfEonothem',
+  '理之冠' = 'CircletOfLogos'
+}
+
 export type ArtifactSlotsCode = keyof typeof ArtifactSlots
 export type ArtifactSlotsChinese = `${ArtifactSlots}`
 
