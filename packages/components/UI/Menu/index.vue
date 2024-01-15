@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { ref, watch } from 'vue'
 import { ClassNameFactor, EventDispatch } from '@/utils'
 import AttentionDecoration from '../Tags/AttentionDecoration.vue'
 
@@ -21,34 +21,40 @@ const emits = defineEmits<{
 
 // 用于应用按下但未松开时样式展示
 const press = ref(-1)
-const active = ref(props.modelValue || '')
+const active = ref(props.options[0].url || '')
 
 const handleClick = (e: Event) => {
   EventDispatch<{ url: string }>(e, {
     item: (dataset) => {
-      if (dataset.url !== active.value) {
-        let stop = false
-        emits('change', active.value, dataset.url, () => (stop = true))
-        if (!stop) {
-          active.value = dataset.url
-          emits('update:modelValue', dataset.url)
-        }
-      }
+      handleActiveChange(dataset.url)
     }
   })
   press.value = -1
 }
 
-onMounted(() => {
-  if (props.options.findIndex((o) => o.url === active.value) === -1) {
-    let stop = false
-    emits('change', active.value, props.options[0].url, () => (stop = true))
-    if (!stop) {
-      active.value = props.options[0].url
-      emits('update:modelValue', props.options[0].url)
-    }
+const handleActiveChange = (url: string) => {
+  // url invalid or equal
+  if (props.options.findIndex((o) => o.url === url) === -1 || url === active.value) return
+
+  let stop = false
+  emits('change', active.value, url, () => (stop = true))
+  if (!stop) {
+    active.value = url
+    emits('update:modelValue', url)
   }
-})
+}
+
+watch(
+  () => props.modelValue,
+  () => {
+    if (props.modelValue && props.modelValue !== active.value) {
+      handleActiveChange(props.modelValue)
+    }
+  },
+  {
+    immediate: true
+  }
+)
 </script>
 
 <template>
