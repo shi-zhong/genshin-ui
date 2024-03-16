@@ -22,7 +22,7 @@
   5. 添加了`Weapon`，`Element`，`Artifact`的反向枚举。修改了这三个的导出方式。
   6. 额外导出了`version`变量。
 
-- ${__INFO__}
+- `2024-03-16` `v1.0.3`
   1. 解决了`Menu`值不随外部`v-model`更新的问题
   2. 对`Button`组件；添加了`$add`,`$reduce`图标。
   3. 添加了`SingleLoading`,`InputNumber`， `Slider`, `Switch`组件
