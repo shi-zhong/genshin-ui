@@ -112,6 +112,42 @@
   &-close::before {
     background-image: url(../../../assets/icons/close.png);
   }
+
+  &-add {
+    .special-fork-line {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+
+      width: 20%;
+      height: 90%;
+      background-color: var(--theme-button-color);
+      border-radius: 999px;
+    }
+
+    &::before {
+      .special-fork-line();
+      transform: translate(-50%, -50%) rotate(90deg);
+    }
+    &::after {
+      .special-fork-line();
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  &-reduce::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    width: 20%;
+    height: 90%;
+    background-color: var(--theme-button-color);
+    border-radius: 999px;
+    transform: translate(-50%, -50%) rotate(90deg);
+  }
 }
 
 .decoration-colord-image {
@@ -120,7 +156,7 @@
   height: 100%;
   border-radius: 50%;
 
-  &::before {
+  &::before, &::after {
     content: '';
     position: absolute;
     display: block;
@@ -133,6 +169,8 @@
 }
 
 .button-wrap-button:active .decoration-colord-image::before,
-.button-wrap-button.button-wrap-shrink-disable .decoration-colord-image::before {
+.button-wrap-button:active .decoration-colord-image::after,
+.button-wrap-button.button-wrap-shrink:disabled .decoration-colord-image::before,
+.button-wrap-button.button-wrap-shrink:disabled .decoration-colord-image::after {
   filter: brightness(5);
 }

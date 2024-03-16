@@ -3,11 +3,13 @@ import type { App, Component } from 'vue'
 import Button from './Button'
 import { Card, DetailCard } from './Card'
 import HighLight from './HighLight'
-import Loading from './Loading'
+import { InputNumber, Slider } from './Input'
+import { Loading, SingleLoading } from './Loading'
 import Menu from './Menu'
 import { Message } from './Message'
 import Modal, { ModalFunc } from './Modal'
 import Select from './Select'
+import Switch from './Switch'
 import { TabPane, Tabs } from './Tabs'
 import { AttentionDecoration, Enable, Line, Lock, RankBar, Rarity, Refine } from './Tags'
 
@@ -18,11 +20,15 @@ const components: Component[] = [
   Card,
   DetailCard,
   HighLight,
+  InputNumber,
+  Slider,
   Loading,
+  SingleLoading,
   Menu,
   Message,
   Modal,
   Select,
+  Switch,
   TabPane,
   Tabs,
   ...Tags
@@ -57,12 +63,16 @@ export {
   Card,
   DetailCard,
   HighLight,
+  InputNumber,
+  Slider,
   Loading,
+  SingleLoading,
   Menu,
   Message,
   Modal,
   ModalFunc,
   Select,
+  Switch,
   TabPane,
   Tabs
 }

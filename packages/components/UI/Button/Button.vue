@@ -40,26 +40,18 @@ const isSleeping = ref(false)
 const S = ClassNameFactor('button-wrap-')
 
 const decideExtraButtonStyle = () => {
-  let button = ''
-
   switch (type.value) {
     case 'shrink': {
-      if (props.shape && props?.shape === 'round') {
-        button = S(['shrink', 'round'])
-      } else {
-        button = S({
-          shrink: true,
-          'shrink-disable': Boolean(props.disable || isSleeping.value)
-        })
-      }
-      break
+      return S({
+        shrink: true,
+        round: Boolean(props.shape && props?.shape === 'round'),
+        'shrink-round-disable': Boolean(props.disable || isSleeping.value)
+      })
     }
     case 'spread': {
-      button = S('spread')
-      break
+      return S('spread')
     }
   }
-  return button
 }
 
 const handleClick = () => {
@@ -207,7 +199,7 @@ const themeLight = {
     width: 100%;
   }
 
-  &:active {
+  &:not(:disabled):active {
     &::after {
       filter: blur(1px);
       background: var(--active-mixed-color);
@@ -218,19 +210,22 @@ const themeLight = {
     opacity: 0.9;
   }
   // 设置禁用样式，双类名加权重
-  &-disable.button-wrap-button {
+  &:disabled:not(&-round).button-wrap-button {
     &::after {
-      // 取消激活样式
-      filter: none;
-      opacity: 1;
-      box-shadow: none;
-
       border: 1px solid var(--blank-white);
       background: transparent;
     }
-    // cancel active style
-    &:active {
+    & .button-wrap-special {
       opacity: 1;
+    }
+    color: var(--theme-button-reverse-color);
+  }
+
+  &:disabled.button-wrap-round.button-wrap-button {
+    opacity: 0.5;
+    &::after {
+      border: none;
+      background: var(--active-mixed-color);
     }
     & .button-wrap-special {
       opacity: 1;
