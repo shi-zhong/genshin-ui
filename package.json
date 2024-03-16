@@ -1,7 +1,7 @@
 {
   "name": "@shi-zhong/genshin-ui",
   "homepage": "https://github.com/shi-zhong/genshin-ui",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "private": false,
   "type": "module",
   "main": "./dist/lib/index.js",
